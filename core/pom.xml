@@ -14,5 +14,6 @@
 
    <modules>
       <module>server</module>
+      <module>dal</module>
    </modules>
 </project>
