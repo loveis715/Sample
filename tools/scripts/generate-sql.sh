@@ -23,7 +23,7 @@ sub add_create_table_command() {
     my($db_table_name) = @_;
 
     print "Adding create table command for table $table_name....\n";
-    my $new_content = "\\c $db_table_name postgres\n\n$sqltext";
+    my $new_content = "\\c $db_table_name morpho\n\n$sqltext";
     return $new_content;
 }
 
