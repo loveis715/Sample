@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ambergarden.orderprocessor.converter.OrderConverter;
+import com.ambergarden.orderprocessor.exception.BadOrderRequestException;
+import com.ambergarden.orderprocessor.exception.OrderNotFoundException;
 import com.ambergarden.orderprocessor.orm.repository.order.OrderRepository;
 import com.ambergarden.orderprocessor.schema.beans.order.Order;
 import com.ambergarden.orderprocessor.schema.beans.order.OrderStatus;
@@ -29,6 +31,8 @@ public class OrderService {
    }
 
    public Order create(Order order) {
+      validOrderForCreation(order);
+
       // TODO: Check whether user has specified id.
       // We need support of global event handler, to convert this case
       // into user friendly response
@@ -36,7 +40,7 @@ public class OrderService {
 
       com.ambergarden.orderprocessor.orm.entity.order.Order orderMO
          = orderConverter.convertTo(order);
-      orderMO.setId(-1);
+      orderMO.setId(-1); // PostgreSQL uses -1 for creation.
       orderMO = orderRepository.save(orderMO);
       return orderConverter.convertFrom(orderMO);
    }
@@ -46,8 +50,33 @@ public class OrderService {
       if (result != null) {
          return orderConverter.convertFrom(result);
       } else {
-         // FIXME: A proper way is to raise an exception
-         return null;
+         throw new OrderNotFoundException();
+      }
+   }
+
+   // TODO: Move to validation framework constructed by ControllerAdvice,
+   // if we have time
+   private void validOrderForCreation(Order order) {
+      // The default value for id field is 0, and some JS framework uses
+      // -1 for creation.
+      if (order.getId() != -1 && order.getId() != 0) {
+         throw new BadOrderRequestException();
+      }
+
+      if (order.getOrderStatus() != null) {
+         throw new BadOrderRequestException();
+      }
+
+      if (order.getCreateTime() != null || order.getLastUpdateTime() != null) {
+         throw new BadOrderRequestException();
+      }
+
+      // User should not specify any steps
+      if (order.getSchedulingStep() != null
+         || order.getPreProcessingStep() != null
+         || order.getProcessingStep() != null
+         || order.getPostProcessingStep() != null) {
+         throw new BadOrderRequestException();
       }
    }
 
