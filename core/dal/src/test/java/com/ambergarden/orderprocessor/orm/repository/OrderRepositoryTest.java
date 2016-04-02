@@ -150,19 +150,23 @@ public class OrderRepositoryTest {
 
    private Order createMockOrder() {
       Date timestamp = new Date();
+
+      Order mockOrder = new Order();
+      mockOrder.setOrderStatus(OrderStatus.SCHEDULED);
+      mockOrder.setCreateTime(timestamp);
+      mockOrder.setLastUpdateTime(timestamp);
+      mockOrder.setSchedulingStep(createMockStep(timestamp));
+      mockOrder.setPreprocessingStep(createMockStep(timestamp));
+      mockOrder.setProcessingStep(createMockStep(timestamp));
+      mockOrder.setPostProcessingStep(createMockStep(timestamp));
+      return mockOrder;
+   }
+
+   private OrderStep createMockStep(Date timestamp) {
       OrderStep mockStep = new OrderStep();
       mockStep.setCreateTime(timestamp);
       mockStep.setLastUpdateTime(timestamp);
       mockStep.setStepStatus(StepStatus.SCHEDULED);
-
-      Order mockOrder = new Order();
-      mockOrder.setCreateTime(timestamp);
-      mockOrder.setLastUpdateTime(timestamp);
-      mockOrder.setSchedulingStep(mockStep);
-      mockOrder.setPreprocessingStep(mockStep);
-      mockOrder.setProcessingStep(mockStep);
-      mockOrder.setPostProcessingStep(mockStep);
-      mockOrder.setOrderStatus(OrderStatus.SCHEDULED);
-      return mockOrder;
+      return mockStep;
    }
 }

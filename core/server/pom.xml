@@ -118,6 +118,11 @@
             <artifactId>rest-stub</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.ambergarden.orderprocessor</groupId>
+            <artifactId>dal</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -5,4 +5,12 @@
               jaxb:extensionBindingPrefixes="xjc"
               version="2.0">
 
+    <jaxb:bindings>
+        <jaxb:globalBindings>
+            <jaxb:serializable/>
+
+            <xjc:javaType name="java.util.Date" xmlType="xs:date"
+                          adapter="com.ambergarden.orderprocessor.xjb.adapter.DateXmlAdapter"/>
+        </jaxb:globalBindings>
+    </jaxb:bindings>
 </jaxb:bindings>

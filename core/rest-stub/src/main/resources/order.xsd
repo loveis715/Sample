@@ -1,0 +1,47 @@
+<xsd:schema xmlns="http://www.ambergarden.com/orderprocessor/schema/beans/order"
+            targetNamespace="http://www.ambergarden.com/orderprocessor/schema/beans/order"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+   <xsd:simpleType name="step-status">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="SCHEDULED"/>
+         <xsd:enumeration value="IN_PROGRESS"/>
+         <xsd:enumeration value="COMPLETE"/>
+         <xsd:enumeration value="FAIL"/>
+         <xsd:enumeration value="ROLLING_BACK"/>
+         <xsd:enumeration value="ROLLBACKED"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:complexType name="order-step">
+      <xsd:sequence>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element name="step-status" type="step-status"/>
+         <xsd:element name="create-time" type="xsd:date"/>
+         <xsd:element name="last-update-time" type="xsd:date"/>
+      </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:simpleType name="order-status">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="SCHEDULED"/>
+         <xsd:enumeration value="IN_PROGRESS"/>
+         <xsd:enumeration value="COMPLETE"/>
+         <xsd:enumeration value="ROLLING_BACK"/>
+         <xsd:enumeration value="FAILED"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:complexType name="order">
+      <xsd:sequence>
+         <xsd:element name="id" type="xsd:int"/>
+         <xsd:element name="order-status" type="order-status"/>
+         <xsd:element name="create-time" type="xsd:date"/>
+         <xsd:element name="last-update-time" type="xsd:date"/>
+         <xsd:element name="scheduling-step" type="order-step"/>
+         <xsd:element name="pre-processing-step" type="order-step"/>
+         <xsd:element name="processing-step" type="order-step"/>
+         <xsd:element name="post-processing-step" type="order-step"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>
