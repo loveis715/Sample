@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:task="http://www.springframework.org/schema/task" xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/task
+                           http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <bean id="orderProcessor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="50" />
+        <property name="queueCapacity" value="50" />
+    </bean>
+
+    <bean id="orderDispatcher" class="com.ambergarden.orderprocessor.dispatcher.OrderDispatcher"/>
+
+    <task:scheduled-tasks scheduler="orderDispatcherScheduler">
+        <task:scheduled ref="orderDispatcher" method="dispatch" fixed-delay="5000" />
+    </task:scheduled-tasks>
+
+    <task:scheduler id="orderDispatcherScheduler" pool-size="1" />
+</beans>

@@ -7,6 +7,7 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <beans:import resource="classpath*:/META-INF/spring/db/*-context.xml"/>
+    <beans:import resource="classpath*:/META-INF/spring/scheduling/*-context.xml"/>
 
     <!-- DispatcherServlet Context: defines this servlet's request-processing 
         infrastructure -->

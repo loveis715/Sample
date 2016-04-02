@@ -21,6 +21,8 @@ public class Order extends AbstractVersionedEntity {
    @Enumerated(EnumType.STRING)
    private OrderStatus orderStatus;
 
+   private String processingNode;
+
    @OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
    @JoinColumn(name="SCHEDULING_STEP_ID")
    private OrderStep schedulingStep;
@@ -43,6 +45,14 @@ public class Order extends AbstractVersionedEntity {
 
    public void setOrderStatus(OrderStatus orderStatus) {
       this.orderStatus = orderStatus;
+   }
+
+   public String getProcessingNode() {
+      return processingNode;
+   }
+
+   public void setProcessingNode(String processingNode) {
+      this.processingNode = processingNode;
    }
 
    public OrderStep getSchedulingStep() {

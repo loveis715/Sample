@@ -1,11 +1,15 @@
 package com.ambergarden.orderprocessor.orm.repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +126,55 @@ public class OrderRepositoryTest {
       Order order = createMockOrder();
       order.setPostProcessingStep(null);
       orderRepository.save(order);
+   }
+
+   @Test
+   public void testFindAllByLastUpdateTimeAndOrderStatus() {
+      // Create a mock order first
+      Order order = createMockOrder();
+      order = orderRepository.save(order);
+
+      // Verify that the mock order could be retrieved with a previous time and SCHEDULED status
+      Date date = order.getLastUpdateTime();
+      Date prevTime = DateUtils.addSeconds(date, -1);
+      Date laterTime = DateUtils.addSeconds(date, 1);
+      List<Order> prevOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(prevTime, OrderStatus.SCHEDULED);
+      List<Order> laterOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(laterTime, OrderStatus.SCHEDULED);
+      assertTrue(prevOrders.size() + 1 == laterOrders.size());
+
+      // Verify that the mock order could not be retrieved with a previous time and COMPLETE status
+      prevOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(prevTime, OrderStatus.COMPLETE);
+      laterOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(laterTime, OrderStatus.COMPLETE);
+      assertTrue(prevOrders.size() == laterOrders.size());
+   }
+
+   @Test
+   public void testFindAllByOrderStatus() {
+      // Create a mock order
+      Order order = createMockOrder();
+      order = orderRepository.save(order);
+
+      // The mock order should be in SCHEDULED state
+      boolean exists = false;
+      List<Order> scheduledOrders = orderRepository.findAllByOrderStatus(OrderStatus.SCHEDULED);
+      for (Order scheduledOrder : scheduledOrders) {
+         if (scheduledOrder.getId() == order.getId()) {
+            exists = true;
+         }
+         assertEquals(OrderStatus.SCHEDULED, scheduledOrder.getOrderStatus());
+      }
+      assertTrue(exists);
+
+      // The mock order should not be in IN_PROGRESS state
+      exists = false;
+      List<Order> pendingOrders = scheduledOrders = orderRepository.findAllByOrderStatus(OrderStatus.IN_PROGRESS);
+      for (Order pendingOrder : pendingOrders) {
+         if (pendingOrder.getId() == order.getId()) {
+            exists = true;
+         }
+         assertEquals(OrderStatus.IN_PROGRESS, pendingOrder.getOrderStatus());
+      }
+      assertFalse(exists);
    }
 
    private void verifyOrderEquality(Order expected, Order result) {
