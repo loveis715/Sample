@@ -21,7 +21,7 @@ public abstract class AbstractEntity {
    @GeneratedValue(strategy=GenerationType.AUTO)
    private int id = -1;
 
-   private Date createTime;
+   private Date startTime;
 
    private Date lastUpdateTime;
 
@@ -33,12 +33,12 @@ public abstract class AbstractEntity {
       this.id = id;
    }
 
-   public Date getCreateTime() {
-      return createTime;
+   public Date getStartTime() {
+      return startTime;
    }
 
-   public void setCreateTime(Date createTime) {
-      this.createTime = createTime;
+   public void setStartTime(Date startTime) {
+      this.startTime = startTime;
    }
 
    public Date getLastUpdateTime() {

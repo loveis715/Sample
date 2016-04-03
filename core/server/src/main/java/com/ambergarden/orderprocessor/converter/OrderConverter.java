@@ -20,7 +20,7 @@ public class OrderConverter
          = new com.ambergarden.orderprocessor.schema.beans.order.Order();
       order.setId(mo.getId());
       order.setOrderStatus(convertFrom(mo.getOrderStatus()));
-      order.setCreateTime(mo.getCreateTime());
+      order.setStartTime(mo.getStartTime());
       order.setLastUpdateTime(mo.getLastUpdateTime());
       order.setSchedulingStep(convertFrom(mo.getSchedulingStep()));
       order.setPreProcessingStep(convertFrom(mo.getPreprocessingStep()));
@@ -34,7 +34,7 @@ public class OrderConverter
       Order order = new Order();
       order.setId(dto.getId());
       order.setOrderStatus(convertTo(dto.getOrderStatus()));
-      order.setCreateTime(dto.getCreateTime());
+      order.setStartTime(dto.getStartTime());
       order.setLastUpdateTime(dto.getLastUpdateTime());
       order.setSchedulingStep(convertTo(dto.getSchedulingStep()));
       order.setPreprocessingStep(convertTo(dto.getPreProcessingStep()));
@@ -49,7 +49,7 @@ public class OrderConverter
          = new com.ambergarden.orderprocessor.schema.beans.order.OrderStep();
       orderStep.setId(mo.getId());
       orderStep.setStepStatus(convertFrom(mo.getStepStatus()));
-      orderStep.setCreateTime(mo.getCreateTime());
+      orderStep.setStartTime(mo.getStartTime());
       orderStep.setLastUpdateTime(mo.getLastUpdateTime());
       return orderStep;
    }
@@ -59,7 +59,7 @@ public class OrderConverter
       OrderStep orderStep = new OrderStep();
       orderStep.setId(dto.getId());
       orderStep.setStepStatus(convertTo(dto.getStepStatus()));
-      orderStep.setCreateTime(dto.getCreateTime());
+      orderStep.setStartTime(dto.getStartTime());
       orderStep.setLastUpdateTime(dto.getLastUpdateTime());
       return orderStep;
    }
@@ -73,7 +73,6 @@ public class OrderConverter
       case COMPLETE: return com.ambergarden.orderprocessor.schema.beans.order.StepStatus.COMPLETE;
       case ROLLING_BACK: return com.ambergarden.orderprocessor.schema.beans.order.StepStatus.ROLLING_BACK;
       case ROLLBACKED: return com.ambergarden.orderprocessor.schema.beans.order.StepStatus.ROLLBACKED;
-      case FAIL: return com.ambergarden.orderprocessor.schema.beans.order.StepStatus.FAIL;
       default: throw new UnsupportedOperationException();
       }
    }
@@ -85,7 +84,6 @@ public class OrderConverter
       case COMPLETE: return StepStatus.COMPLETE;
       case ROLLING_BACK: return StepStatus.ROLLING_BACK;
       case ROLLBACKED: return StepStatus.ROLLBACKED;
-      case FAIL: return StepStatus.FAIL;
       default: throw new UnsupportedOperationException();
       }
    }

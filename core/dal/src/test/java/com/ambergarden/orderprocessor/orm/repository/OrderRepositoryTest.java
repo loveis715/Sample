@@ -27,6 +27,8 @@ import com.ambergarden.orderprocessor.orm.repository.order.OrderRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath*:/META-INF/spring/db/dal-*-context.xml" })
 public class OrderRepositoryTest {
+   private static String MOCK_PROCESSING_NODE = "mockNode";
+
    @Autowired
    private OrderRepository orderRepository;
 
@@ -130,21 +132,21 @@ public class OrderRepositoryTest {
 
    @Test
    public void testFindAllByLastUpdateTimeAndOrderStatus() {
+      Date timestamp = new Date();
+      timestamp = DateUtils.addSeconds(timestamp, 10);
+      List<Order> prevOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(timestamp, OrderStatus.SCHEDULED);
+
       // Create a mock order first
       Order order = createMockOrder();
       order = orderRepository.save(order);
 
       // Verify that the mock order could be retrieved with a previous time and SCHEDULED status
-      Date date = order.getLastUpdateTime();
-      Date prevTime = DateUtils.addSeconds(date, -1);
-      Date laterTime = DateUtils.addSeconds(date, 1);
-      List<Order> prevOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(prevTime, OrderStatus.SCHEDULED);
-      List<Order> laterOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(laterTime, OrderStatus.SCHEDULED);
+      List<Order> laterOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(timestamp, OrderStatus.SCHEDULED);
       assertTrue(prevOrders.size() + 1 == laterOrders.size());
 
       // Verify that the mock order could not be retrieved with a previous time and COMPLETE status
-      prevOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(prevTime, OrderStatus.COMPLETE);
-      laterOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(laterTime, OrderStatus.COMPLETE);
+      prevOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(timestamp, OrderStatus.COMPLETE);
+      laterOrders = orderRepository.findAllByLastUpdateTimeAndOrderStatus(timestamp, OrderStatus.COMPLETE);
       assertTrue(prevOrders.size() == laterOrders.size());
    }
 
@@ -177,8 +179,39 @@ public class OrderRepositoryTest {
       assertFalse(exists);
    }
 
+   @Test
+   public void testFindAllByProcessingNode() {
+      // Create a mock order
+      Order order = createMockOrder();
+      order = orderRepository.save(order);
+
+      // Find by specific processing node will not return the newly created mock order
+      boolean exists = false;
+      List<Order> results = orderRepository.findAllByProcessingNode(MOCK_PROCESSING_NODE);
+      for (Order result : results) {
+         if (result.getId() == order.getId()) {
+            exists = true;
+         }
+      }
+      assertFalse(exists);
+
+      // Set our mock order's processing node to be MOCK_PROCESSING_NODE
+      order.setProcessingNode(MOCK_PROCESSING_NODE);
+      order = orderRepository.save(order);
+
+      // Find by MOCK_PROCESSING_NODE will return the newly created mock order
+      exists = false;
+      results = orderRepository.findAllByProcessingNode(MOCK_PROCESSING_NODE);
+      for (Order result : results) {
+         if (result.getId() == order.getId()) {
+            exists = true;
+         }
+      }
+      assertTrue(exists);
+   }
+
    private void verifyOrderEquality(Order expected, Order result) {
-      assertEquals(expected.getCreateTime(), result.getCreateTime());
+      assertEquals(expected.getStartTime(), result.getStartTime());
       assertEquals(expected.getLastUpdateTime(), result.getLastUpdateTime());
       assertEquals(expected.getOrderStatus(), result.getOrderStatus());
 
@@ -196,7 +229,7 @@ public class OrderRepositoryTest {
    }
 
    private void verifyStepEquality(OrderStep expected, OrderStep result) {
-      assertEquals(expected.getCreateTime(), result.getCreateTime());
+      assertEquals(expected.getStartTime(), result.getStartTime());
       assertEquals(expected.getLastUpdateTime(), result.getLastUpdateTime());
       assertEquals(expected.getStepStatus(), result.getStepStatus());
    }
@@ -206,7 +239,7 @@ public class OrderRepositoryTest {
 
       Order mockOrder = new Order();
       mockOrder.setOrderStatus(OrderStatus.SCHEDULED);
-      mockOrder.setCreateTime(timestamp);
+      mockOrder.setStartTime(timestamp);
       mockOrder.setLastUpdateTime(timestamp);
       mockOrder.setSchedulingStep(createMockStep(timestamp));
       mockOrder.setPreprocessingStep(createMockStep(timestamp));
@@ -217,7 +250,7 @@ public class OrderRepositoryTest {
 
    private OrderStep createMockStep(Date timestamp) {
       OrderStep mockStep = new OrderStep();
-      mockStep.setCreateTime(timestamp);
+      mockStep.setStartTime(timestamp);
       mockStep.setLastUpdateTime(timestamp);
       mockStep.setStepStatus(StepStatus.SCHEDULED);
       return mockStep;

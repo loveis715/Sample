@@ -14,14 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.ambergarden.orderprocessor.TestUtils;
 import com.ambergarden.orderprocessor.orm.entity.order.Order;
 import com.ambergarden.orderprocessor.orm.entity.order.OrderStatus;
-import com.ambergarden.orderprocessor.orm.entity.order.OrderStep;
-import com.ambergarden.orderprocessor.orm.entity.order.StepStatus;
 import com.ambergarden.orderprocessor.orm.repository.order.OrderRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath*:/spring/test-context.xml" })
+@ContextConfiguration({ "classpath*:/spring/dispatcher-test-context.xml" })
 public class OrderDispatcherTest {
    // The previously assigned node for mock order. Assumes this node
    // has been failed.
@@ -36,7 +35,7 @@ public class OrderDispatcherTest {
    @Test
    public void testDispatching() {
       // Create the mock order for dispatching
-      Order mockOrder = createMockOrder();
+      Order mockOrder = TestUtils.createMockOrder();
       mockOrder = orderRepository.save(mockOrder);
       assertNull(mockOrder.getProcessingNode());
 
@@ -60,7 +59,7 @@ public class OrderDispatcherTest {
    @Test
    public void testDispatchBlockedOrders() {
       // Create the mock order for test
-      Order mockOrder = createMockOrder();
+      Order mockOrder = TestUtils.createMockOrder();
       mockOrder = orderRepository.save(mockOrder);
       assertNull(mockOrder.getProcessingNode());
 
@@ -92,7 +91,7 @@ public class OrderDispatcherTest {
    @Test
    public void testDispatchBlockedRollbacks() {
       // Create the mock order for test
-      Order mockOrder = createMockOrder();
+      Order mockOrder = TestUtils.createMockOrder();
       mockOrder = orderRepository.save(mockOrder);
       assertNull(mockOrder.getProcessingNode());
 
@@ -119,27 +118,5 @@ public class OrderDispatcherTest {
       orderDispatcher.dispatch();
 
       assertEquals(PREV_ASSIGNED_NODE, processedOrder.getProcessingNode());
-   }
-
-   private Order createMockOrder() {
-      Date timestamp = new Date();
-
-      Order mockOrder = new Order();
-      mockOrder.setOrderStatus(OrderStatus.SCHEDULED);
-      mockOrder.setCreateTime(timestamp);
-      mockOrder.setLastUpdateTime(timestamp);
-      mockOrder.setSchedulingStep(createMockStep(timestamp));
-      mockOrder.setPreprocessingStep(createMockStep(timestamp));
-      mockOrder.setProcessingStep(createMockStep(timestamp));
-      mockOrder.setPostProcessingStep(createMockStep(timestamp));
-      return mockOrder;
-   }
-
-   private OrderStep createMockStep(Date timestamp) {
-      OrderStep mockStep = new OrderStep();
-      mockStep.setCreateTime(timestamp);
-      mockStep.setLastUpdateTime(timestamp);
-      mockStep.setStepStatus(StepStatus.SCHEDULED);
-      return mockStep;
    }
 }

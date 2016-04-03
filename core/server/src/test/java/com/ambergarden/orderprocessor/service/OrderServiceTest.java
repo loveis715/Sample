@@ -93,7 +93,7 @@ public class OrderServiceTest {
       // Create an order with predefined time is not allowed
       Order order = new Order();
       order.setId(0);
-      order.setCreateTime(new Date());
+      order.setStartTime(new Date());
       orderService.create(order);
    }
 
@@ -105,7 +105,7 @@ public class OrderServiceTest {
 
    private void verifyCreatedOrder(Order order) {
       assertTrue(order.getId() != -1);
-      assertEquals(order.getCreateTime(), order.getLastUpdateTime());
+      assertEquals(order.getStartTime(), order.getLastUpdateTime());
       assertEquals(OrderStatus.SCHEDULED, order.getOrderStatus());
 
       verifyOrderStepInCreatedOrder(order.getSchedulingStep());
@@ -118,13 +118,13 @@ public class OrderServiceTest {
       assertNotNull(orderStep);
       assertTrue(orderStep.getId() != 0);
       assertEquals(StepStatus.SCHEDULED, orderStep.getStepStatus());
-      assertEquals(orderStep.getCreateTime(), orderStep.getLastUpdateTime());
+      assertEquals(orderStep.getStartTime(), orderStep.getLastUpdateTime());
    }
 
    private void verifyOrderEquality(Order expected, Order result) {
       assertEquals(expected.getId(), result.getId());
       assertEquals(expected.getOrderStatus(), result.getOrderStatus());
-      assertEquals(expected.getCreateTime(), result.getCreateTime());
+      assertEquals(expected.getStartTime(), result.getStartTime());
       assertEquals(expected.getLastUpdateTime(), result.getLastUpdateTime());
 
       verifyOrderStepEquality(expected.getSchedulingStep(), result.getSchedulingStep());
@@ -136,7 +136,7 @@ public class OrderServiceTest {
    private void verifyOrderStepEquality(OrderStep expected, OrderStep result) {
       assertEquals(expected.getId(), result.getId());
       assertEquals(expected.getStepStatus(), result.getStepStatus());
-      assertEquals(expected.getCreateTime(), result.getCreateTime());
+      assertEquals(expected.getStartTime(), result.getStartTime());
       assertEquals(expected.getLastUpdateTime(), result.getLastUpdateTime());
    }
 }

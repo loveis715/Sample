@@ -6,6 +6,12 @@
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/task
                            http://www.springframework.org/schema/task/spring-task.xsd">
-   <import resource="classpath*:/META-INF/spring/scheduling/order/*-context.xml"/>
-   <import resource="classpath*:/META-INF/spring/scheduling/dispatcher/*-context.xml"/>
+
+    <bean id="orderDispatcher" class="com.ambergarden.orderprocessor.dispatcher.OrderDispatcher"/>
+
+    <task:scheduled-tasks scheduler="orderDispatcherScheduler">
+        <task:scheduled ref="orderDispatcher" method="dispatch" fixed-delay="5000" />
+    </task:scheduled-tasks>
+
+    <task:scheduler id="orderDispatcherScheduler" pool-size="1" />
 </beans>

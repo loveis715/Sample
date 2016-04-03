@@ -7,7 +7,6 @@
          <xsd:enumeration value="SCHEDULED"/>
          <xsd:enumeration value="IN_PROGRESS"/>
          <xsd:enumeration value="COMPLETE"/>
-         <xsd:enumeration value="FAIL"/>
          <xsd:enumeration value="ROLLING_BACK"/>
          <xsd:enumeration value="ROLLBACKED"/>
       </xsd:restriction>
@@ -17,7 +16,7 @@
       <xsd:sequence>
          <xsd:element name="id" type="xsd:int"/>
          <xsd:element name="step-status" type="step-status"/>
-         <xsd:element name="create-time" type="xsd:date"/>
+         <xsd:element name="start-time" type="xsd:date"/>
          <xsd:element name="last-update-time" type="xsd:date"/>
       </xsd:sequence>
    </xsd:complexType>
@@ -36,7 +35,7 @@
       <xsd:sequence>
          <xsd:element name="id" type="xsd:int"/>
          <xsd:element name="order-status" type="order-status"/>
-         <xsd:element name="create-time" type="xsd:date"/>
+         <xsd:element name="start-time" type="xsd:date"/>
          <xsd:element name="last-update-time" type="xsd:date"/>
          <xsd:element name="scheduling-step" type="order-step"/>
          <xsd:element name="pre-processing-step" type="order-step"/>

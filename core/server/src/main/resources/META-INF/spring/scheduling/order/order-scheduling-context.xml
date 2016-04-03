@@ -6,6 +6,18 @@
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/task
                            http://www.springframework.org/schema/task/spring-task.xsd">
-   <import resource="classpath*:/META-INF/spring/scheduling/order/*-context.xml"/>
-   <import resource="classpath*:/META-INF/spring/scheduling/dispatcher/*-context.xml"/>
+
+    <bean id="orderProcessor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="50" />
+        <property name="queueCapacity" value="50" />
+    </bean>
+
+    <bean id="orderProcessingEngine" class="com.ambergarden.orderprocessor.processor.OrderProcessingEngine"/>
+
+    <task:scheduled-tasks scheduler="orderProcessingScheduler">
+        <task:scheduled ref="orderProcessingEngine" method="process" fixed-delay="5000" />
+    </task:scheduled-tasks>
+
+    <task:scheduler id="orderProcessingScheduler" pool-size="1" />
 </beans>

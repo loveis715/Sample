@@ -81,7 +81,7 @@ public class OrderService {
          throw new BadOrderRequestException();
       }
 
-      if (order.getCreateTime() != null || order.getLastUpdateTime() != null) {
+      if (order.getStartTime() != null || order.getLastUpdateTime() != null) {
          throw new BadOrderRequestException();
       }
 
@@ -98,7 +98,7 @@ public class OrderService {
       // Update order's status, timestamp
       Date timestamp = new Date();
       order.setOrderStatus(OrderStatus.SCHEDULED);
-      order.setCreateTime(timestamp);
+      order.setStartTime(timestamp);
       order.setLastUpdateTime(timestamp);
 
       // Generate order steps for tracking order's state
@@ -113,8 +113,6 @@ public class OrderService {
    private OrderStep createFakeOrderStep(Date timestamp) {
       OrderStep orderStep = new OrderStep();
       orderStep.setStepStatus(StepStatus.SCHEDULED);
-      orderStep.setCreateTime(timestamp);
-      orderStep.setLastUpdateTime(timestamp);
       return orderStep;
    }
 }

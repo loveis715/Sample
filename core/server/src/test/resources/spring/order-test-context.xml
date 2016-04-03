@@ -9,7 +9,7 @@
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="classpath*:/META-INF/spring/db/*-context.xml"/>
-    <import resource="classpath*:/META-INF/spring/scheduling/*-context.xml"/>
+    <import resource="classpath*:/META-INF/spring/scheduling/order/*-context.xml"/>
 
-    <context:component-scan base-package="com.ambergarden.orderprocessor" />
+    <context:component-scan base-package="com.ambergarden.orderprocessor.processor" />
 </beans>

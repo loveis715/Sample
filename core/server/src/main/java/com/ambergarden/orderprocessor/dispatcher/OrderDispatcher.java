@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
+import com.ambergarden.orderprocessor.Constants;
 import com.ambergarden.orderprocessor.HomeController;
 import com.ambergarden.orderprocessor.orm.entity.order.Order;
 import com.ambergarden.orderprocessor.orm.entity.order.OrderStatus;
@@ -58,7 +59,7 @@ public class OrderDispatcher {
    // by ourself or LVS, HAProxy etc.
    // Relative huge work to do, e.g. Fault Detection etc.
    private void dispatchOrder(Order order) {
-      String nodeId = "1";
+      String nodeId = Constants.PROCESSING_NODE_NAME;
       Date timestamp = new Date();
       try {
          // Update the processing node and last update time. Then
