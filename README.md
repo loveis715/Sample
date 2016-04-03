@@ -10,7 +10,15 @@ Order dispatcher executes periodically and checks whether there's new order(With
 
 Each order processor will pick the assigned orders and starts to process it. If all steps execute correctly, the order will be marked with COMPLETE, and the order's processing_node field's value will be removed. If there's any failure, the order processor will mark the order as ROLLING_BACK state, and starts to rollback completed steps. When finished, the order will be marked as FAILED.
 
-These three components are fully simulated by spring scheduling, defined in configuration file scheduling-context.xml.
+These three components are fully simulated by spring scheduling, defined in configuration file scheduling-context.xml. Implementation codes locates at:
+
+https://github.com/loveis715/Sample/tree/master/core/server/src/main/java/com/ambergarden/orderprocessor/dispatcher
+
+https://github.com/loveis715/Sample/tree/master/core/server/src/main/java/com/ambergarden/orderprocessor/processor
+
+And test cases for them locates at:
+
+https://github.com/loveis715/Sample/tree/master/core/server/src/test/java/com/ambergarden/orderprocessor
 
 ## Order & Order Steps status
 Order and order steps are different concepts. One order with ROLLING_BACK status may contain steps with COMPLETE, ROLLING_BACK and ROLL_BACKED status. So we have two set of status. One set is for order, the other set is for order step. Users can easily observe the current status of one order, the current step of that order, and operation we're doing on that step.
