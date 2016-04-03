@@ -63,6 +63,10 @@ Some of the technical decisions are made under the pressure of limited time. So 
 
 We've used Spring framework in this sample project. I know it is a heavy weight framework with a hard learning curve. I'm familiar with it, and just using it for safe(since I have only three days).
 
-One plan is to transmit ThreadPoolTaskScheduler into Spring Integration, which can help to really separate our web server, dispatcher and order processor. Spring Integration is a implementation of Enterprise Integration Pattern. It is very suitable for asynchronized, message-based systems.
+One plan is to transmit ThreadPoolTaskScheduler into Spring Integration, which can help to really separate our web server, dispatcher and order processor. Spring Integration is a implementation of Enterprise Integration Pattern. It is very suitable for asynchronized, message-based systems. Please reference my blogs for detail:
 
-We've used RDBMS instead of NoSQL database. I can image that this is a high throughput system, and the write ratio will be high. Since the order steps will not be shared by orders, so RDBMS' normalization is not useful at all. As a result, a denomalized model will be a better solution. That's why NoSQL databases like Cassandra etc. will be better choice. Spring also provides support for NoSQL databases via Spring Data Cassandra, Spring Data MongoDB etc.
+http://www.cnblogs.com/loveis715/p/5185332.html
+
+We've used RDBMS instead of NoSQL database. I can image that this is a high throughput system, and the write ratio will be high. Since the order steps will not be shared by orders, so RDBMS' normalization is not useful at all. As a result, a denomalized model will be a better solution. That's why NoSQL databases like Cassandra etc. will be a better choice. Spring also provides support for NoSQL databases via Spring Data Cassandra, Spring Data MongoDB etc. Please reference my blog post for more detail:
+
+http://www.cnblogs.com/loveis715/p/5299495.html
