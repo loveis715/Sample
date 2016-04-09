@@ -1,4 +1,4 @@
-package com.ambergarden.orderprocessor.orm.repository;
+package com.ambergarden.orderprocessor.orm.repository.order;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
