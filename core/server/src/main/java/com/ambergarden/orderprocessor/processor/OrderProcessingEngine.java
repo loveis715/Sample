@@ -12,6 +12,8 @@ import com.ambergarden.orderprocessor.Constants;
 import com.ambergarden.orderprocessor.orm.entity.order.Order;
 import com.ambergarden.orderprocessor.orm.entity.order.OrderStep;
 import com.ambergarden.orderprocessor.orm.repository.order.OrderRepository;
+import com.ambergarden.orderprocessor.schema.beans.monitoring.ServerMetrics;
+import com.ambergarden.orderprocessor.service.MetricsService;
 
 /**
  * Component used to pick orders for processing.
@@ -20,6 +22,8 @@ import com.ambergarden.orderprocessor.orm.repository.order.OrderRepository;
  */
 @Component
 public class OrderProcessingEngine {
+   private String instanceId = Constants.PROCESSING_NODE_NAME;
+
    @Autowired
    private OrderRepository orderRepository;
 
@@ -27,7 +31,20 @@ public class OrderProcessingEngine {
    @Qualifier(value = "orderProcessor")
    private TaskExecutor taskExecutor;
 
+   @Autowired
+   private MetricsService metricsService;
+
+   public String getInstanceId() {
+      return instanceId;
+   }
+
+   public void setInstanceId(String instanceId) {
+      this.instanceId = instanceId;
+   }
+
    public void process() {
+      sendSystemMetrics();
+
       // Process all orders assigned to this node
       List<Order> orders = orderRepository.findAllByProcessingNode(Constants.PROCESSING_NODE_NAME);
       for (Order order : orders) {
@@ -40,6 +57,15 @@ public class OrderProcessingEngine {
          Runnable executor = new OrderProcessingTask(order.getId(), orderRepository);
          taskExecutor.execute(executor);
       }
+   }
+
+   private void sendSystemMetrics() {
+      // Assume that we're using http client to send the metrics data
+      // to monitoring system
+      ServerMetrics metrics = new ServerMetrics();
+      metrics.setId(instanceId);
+      metrics.setLastUpdateTime(new Date());
+      metricsService.save(instanceId, metrics);
    }
 
    // If the last update time recorded in each step before the time recorded by order,

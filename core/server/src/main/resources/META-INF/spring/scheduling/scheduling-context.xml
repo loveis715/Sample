@@ -8,4 +8,5 @@
                            http://www.springframework.org/schema/task/spring-task.xsd">
    <import resource="classpath*:/META-INF/spring/scheduling/order/*-context.xml"/>
    <import resource="classpath*:/META-INF/spring/scheduling/dispatcher/*-context.xml"/>
+   <import resource="classpath*:/META-INF/spring/scheduling/monitoring/*-context.xml"/>
 </beans>

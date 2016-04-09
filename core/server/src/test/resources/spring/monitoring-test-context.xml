@@ -9,12 +9,8 @@
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
     <import resource="classpath*:/META-INF/spring/db/*-context.xml"/>
-    <import resource="classpath*:/META-INF/spring/scheduling/order/*-context.xml"/>
 
-    <context:component-scan base-package="com.ambergarden.orderprocessor.processor" />
-    <!-- TODO: Remove the direct use of MetricsService, by sending requests via HttpClient,
-               then we can remove these unnecessary package scans. This may bring trouble in
-               spring configuration management. -->
     <context:component-scan base-package="com.ambergarden.orderprocessor.converter" />
+    <context:component-scan base-package="com.ambergarden.orderprocessor.monitoring" />
     <context:component-scan base-package="com.ambergarden.orderprocessor.service" />
 </beans>
