@@ -5,14 +5,14 @@ package com.ambergarden.orderprocessor.exception;
  * This exception will be handled by ApplicationExceptionHandler
  * and converts to a 403 response
  */
-public class OrderNotFoundException extends OrderProcessorException {
+public class EntityNotFoundException extends OrderProcessorException {
    private static final long serialVersionUID = 1L;
 
-   public OrderNotFoundException() {
+   public EntityNotFoundException() {
       super("", null);
    }
 
-   public OrderNotFoundException(String message, Throwable cause) {
+   public EntityNotFoundException(String message, Throwable cause) {
       super(message, cause);
    }
 }

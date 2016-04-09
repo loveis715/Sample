@@ -11,8 +11,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.ambergarden.orderprocessor.HomeController;
-import com.ambergarden.orderprocessor.exception.BadOrderRequestException;
-import com.ambergarden.orderprocessor.exception.OrderNotFoundException;
+import com.ambergarden.orderprocessor.exception.BadEntityRequestException;
+import com.ambergarden.orderprocessor.exception.EntityNotFoundException;
 import com.ambergarden.orderprocessor.exception.OrderProcessorException;
 import com.ambergarden.orderprocessor.localization.Localizer;
 
@@ -33,19 +33,19 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
    private static Localizer localizer = Localizer.getLocalizer();
 
    @ExceptionHandler({
-      BadOrderRequestException.class
+      BadEntityRequestException.class
    })
    @ResponseBody
-   public ResponseEntity<?> handleBadOrderRequestException(OrderProcessorException exception, WebRequest request) {
+   public ResponseEntity<?> handleBadEntityRequestException(OrderProcessorException exception, WebRequest request) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(localizer.getLocalizedText("exception.handling.BadOrderRequestException"));
    }
 
    @ExceptionHandler({
-      OrderNotFoundException.class
+      EntityNotFoundException.class
    })
    @ResponseBody
-   public ResponseEntity<?> handleOrderNotFoundException(OrderProcessorException exception, WebRequest request) {
+   public ResponseEntity<?> handleEntityNotFoundException(OrderProcessorException exception, WebRequest request) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
             .body(localizer.getLocalizedText("exception.handling.OrderNotFoundException"));
    }

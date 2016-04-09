@@ -1,0 +1,14 @@
+<xsd:schema xmlns="http://www.ambergarden.com/orderprocessor/schema/beans/monitoring"
+            targetNamespace="http://www.ambergarden.com/orderprocessor/schema/beans/monitoring"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+   <xsd:complexType name="server-metrics">
+      <xsd:sequence>
+         <xsd:element name="id" type="xsd:string"/>
+         <xsd:element name="last-update-time" type="xsd:date"/>
+         <xsd:element name="cpu-usage" type="xsd:double"/>
+         <xsd:element name="memory-usage" type="xsd:double"/>
+         <xsd:element name="storage-usage" type="xsd:double"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

@@ -5,14 +5,14 @@ package com.ambergarden.orderprocessor.exception;
  * This exception will be handled by ApplicationExceptionHandler
  * and converts to a 404 response
  */
-public class BadOrderRequestException extends OrderProcessorException {
+public class BadEntityRequestException extends OrderProcessorException {
    private static final long serialVersionUID = 1L;
 
-   public BadOrderRequestException() {
+   public BadEntityRequestException() {
       super("", null);
    }
 
-   public BadOrderRequestException(String message, Throwable cause) {
+   public BadEntityRequestException(String message, Throwable cause) {
       super(message, cause);
    }
 }

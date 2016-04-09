@@ -6,9 +6,11 @@ package com.ambergarden.orderprocessor;
 public class Constants {
    // API URLs
    public final static String ORDERS_URL = "/api/orders";
+   public final static String METRICS_URL = "/api/metrics";
 
    // URL constants
    public final static String FIND_BY_ID_URL = "/{id}";
+   public final static String SAVE_BY_ID_URL = "/{id}";
    public final static String ID_PATH_VARIABLE = "id";
 
    // Constants used in project

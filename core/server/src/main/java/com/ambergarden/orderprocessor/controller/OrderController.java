@@ -33,7 +33,6 @@ public class OrderController {
    @RequestMapping(method = RequestMethod.GET)
    @ResponseBody
    public List<Order> list() {
-      // TODO: Add audit log
       return orderService.findAll();
    }
 

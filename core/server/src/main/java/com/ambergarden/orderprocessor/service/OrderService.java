@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.ambergarden.orderprocessor.HomeController;
 import com.ambergarden.orderprocessor.converter.OrderConverter;
-import com.ambergarden.orderprocessor.exception.BadOrderRequestException;
-import com.ambergarden.orderprocessor.exception.OrderNotFoundException;
+import com.ambergarden.orderprocessor.exception.BadEntityRequestException;
+import com.ambergarden.orderprocessor.exception.EntityNotFoundException;
 import com.ambergarden.orderprocessor.orm.repository.order.OrderRepository;
 import com.ambergarden.orderprocessor.schema.beans.order.Order;
 import com.ambergarden.orderprocessor.schema.beans.order.OrderStatus;
@@ -64,7 +64,7 @@ public class OrderService {
       if (result != null) {
          return orderConverter.convertFrom(result);
       } else {
-         throw new OrderNotFoundException();
+         throw new EntityNotFoundException();
       }
    }
 
@@ -74,15 +74,15 @@ public class OrderService {
       // The default value for id field is 0, and some JS framework uses
       // -1 for creation.
       if (order.getId() != -1 && order.getId() != 0) {
-         throw new BadOrderRequestException();
+         throw new BadEntityRequestException();
       }
 
       if (order.getOrderStatus() != null) {
-         throw new BadOrderRequestException();
+         throw new BadEntityRequestException();
       }
 
       if (order.getStartTime() != null || order.getLastUpdateTime() != null) {
-         throw new BadOrderRequestException();
+         throw new BadEntityRequestException();
       }
 
       // User should not specify any steps
@@ -90,7 +90,7 @@ public class OrderService {
          || order.getPreProcessingStep() != null
          || order.getProcessingStep() != null
          || order.getPostProcessingStep() != null) {
-         throw new BadOrderRequestException();
+         throw new BadEntityRequestException();
       }
    }
 

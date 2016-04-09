@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ambergarden.orderprocessor.exception.BadOrderRequestException;
-import com.ambergarden.orderprocessor.exception.OrderNotFoundException;
+import com.ambergarden.orderprocessor.exception.BadEntityRequestException;
+import com.ambergarden.orderprocessor.exception.EntityNotFoundException;
 import com.ambergarden.orderprocessor.schema.beans.order.Order;
 import com.ambergarden.orderprocessor.schema.beans.order.OrderStatus;
 import com.ambergarden.orderprocessor.schema.beans.order.OrderStep;
@@ -62,7 +62,7 @@ public class OrderServiceTest {
       assertTrue(order.getId() != 0 && order.getId() != -1);
    }
 
-   @Test(expected = BadOrderRequestException.class)
+   @Test(expected = BadEntityRequestException.class)
    public void testCreateWithInvalidId() {
       // Create order with a predefined id is not allowed
       Order order = new Order();
@@ -70,7 +70,7 @@ public class OrderServiceTest {
       orderService.create(order);
    }
 
-   @Test(expected = BadOrderRequestException.class)
+   @Test(expected = BadEntityRequestException.class)
    public void testCreateWithSteps() {
       // Create order with a predefined step is not allowed
       Order order = new Order();
@@ -79,7 +79,7 @@ public class OrderServiceTest {
       orderService.create(order);
    }
 
-   @Test(expected = BadOrderRequestException.class)
+   @Test(expected = BadEntityRequestException.class)
    public void testCreateWithStatus() {
       // Create an order with predefined status is not allowed
       Order order = new Order();
@@ -88,7 +88,7 @@ public class OrderServiceTest {
       orderService.create(order);
    }
 
-   @Test(expected = BadOrderRequestException.class)
+   @Test(expected = BadEntityRequestException.class)
    public void testCreateWithTime() {
       // Create an order with predefined time is not allowed
       Order order = new Order();
@@ -97,7 +97,7 @@ public class OrderServiceTest {
       orderService.create(order);
    }
 
-   @Test(expected = OrderNotFoundException.class)
+   @Test(expected = EntityNotFoundException.class)
    public void testFindWithInvalidId() {
       // Find a non-existing order should cause the OrderNotFoundException
       orderService.findById(INVALID_ORDER_ID);
