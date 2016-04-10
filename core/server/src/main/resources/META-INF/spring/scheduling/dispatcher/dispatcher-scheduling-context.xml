@@ -7,10 +7,20 @@
                            http://www.springframework.org/schema/task
                            http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <bean id="orderDispatcher" class="com.ambergarden.orderprocessor.dispatcher.OrderDispatcher"/>
+    <bean id="orderDispatcher1" class="com.ambergarden.orderprocessor.dispatcher.OrderDispatcher">
+        <property name="instanceId" value="dispatcher1"/>
+    </bean>
 
     <task:scheduled-tasks scheduler="orderDispatcherScheduler">
-        <task:scheduled ref="orderDispatcher" method="dispatch" fixed-delay="5000" />
+        <task:scheduled ref="orderDispatcher1" method="dispatch" fixed-delay="5000" />
+    </task:scheduled-tasks>
+
+    <bean id="orderDispatcher2" class="com.ambergarden.orderprocessor.dispatcher.OrderDispatcher">
+        <property name="instanceId" value="dispatcher1"/>
+    </bean>
+
+    <task:scheduled-tasks scheduler="orderDispatcherScheduler">
+        <task:scheduled ref="orderDispatcher2" method="dispatch" fixed-delay="5000" />
     </task:scheduled-tasks>
 
     <task:scheduler id="orderDispatcherScheduler" pool-size="1" />

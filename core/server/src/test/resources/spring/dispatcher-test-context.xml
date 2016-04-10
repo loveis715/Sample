@@ -11,5 +11,11 @@
     <import resource="classpath*:/META-INF/spring/db/*-context.xml"/>
     <import resource="classpath*:/META-INF/spring/scheduling/dispatcher/*-context.xml"/>
 
+    <!-- TODO: Remove the direct use of MetricsService, by sending requests via HttpClient,
+               then we can remove these unnecessary package scans. This may bring trouble in
+               spring configuration management. -->
+    <bean class="com.ambergarden.orderprocessor.converter.ServerMetricsConverter"/>
+    <bean class="com.ambergarden.orderprocessor.service.MetricsService"/>
+
     <context:component-scan base-package="com.ambergarden.orderprocessor.dispatcher" />
 </beans>

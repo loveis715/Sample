@@ -16,5 +16,6 @@ public class Constants {
    // Constants used in project
    public final static String PROCESSING_NODE_NAME = "1";
    public final static String PROCESS_CATEGORY_MONITORING = "Monitoring";
+   public final static String PROCESS_CATEGORY_DISPATCHER = "Dispatcher";
    public final static String PROCESS_CATEGORY_WORKER = "Worker";
 }
